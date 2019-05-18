@@ -1,0 +1,4 @@
+services:
+    CleverAge\EAVApiPlatformBundle\Resolver\FamilyResolver:
+        autowire: true
+        public: false

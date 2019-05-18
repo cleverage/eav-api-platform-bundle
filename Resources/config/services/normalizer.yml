@@ -1,0 +1,87 @@
+services:
+    # ATTRIBUTES
+    eav_api_platform.normalizer.base.attribute:
+        class: CleverAge\EAVApiPlatformBundle\Serializer\Normalizer\BaseApiNormalizer
+        parent: api_platform.serializer.normalizer.item
+        calls:
+            - [setNormalizer, ['@Sidus\EAVModelBundle\Serializer\Normalizer\AttributeNormalizer']]
+        tags:
+            - { name: serializer.normalizer, priority: 1 }
+
+    # JsonLD Support
+    eav_api_platform.normalizer.json_ld.attribute:
+        class: CleverAge\EAVApiPlatformBundle\Serializer\Normalizer\JsonLdApiNormalizer
+        parent: api_platform.jsonld.normalizer.item
+        calls:
+            - [setNormalizer, ['@Sidus\EAVModelBundle\Serializer\Normalizer\AttributeNormalizer']]
+        tags:
+            - { name: serializer.normalizer, priority: 9 }
+
+    # DATA
+    Sidus\EAVModelBundle\Serializer\Normalizer\EAVDataNormalizer:
+        class: CleverAge\EAVApiPlatformBundle\Serializer\Normalizer\EAVDataNormalizer
+        parent: serializer.normalizer.object
+        public: false
+        arguments:
+            - '@Sidus\EAVModelBundle\Serializer\MaxDepthHandler'
+            - '@Sidus\EAVModelBundle\Serializer\CircularReferenceHandler'
+            - '@Sidus\EAVModelBundle\Serializer\ByReferenceHandler'
+        calls:
+            - [setIgnoredAttributes, ['%sidus_eav_model.normalizer.data.ignored_attributes%']]
+            - [setReferenceAttributes, ['%sidus_eav_model.normalizer.data.reference_attributes%']]
+            - [setIriConverter, ['@api_platform.iri_converter']]
+        tags:
+            - { name: serializer.normalizer }
+
+    CleverAge\EAVApiPlatformBundle\Serializer\Normalizer\BaseApiNormalizer:
+        parent: api_platform.serializer.normalizer.item
+        public: false
+        calls:
+            - [setNormalizer, ['@Sidus\EAVModelBundle\Serializer\Normalizer\EAVDataNormalizer']]
+        tags:
+            - { name: serializer.normalizer, priority: 1 }
+
+    # JsonLD Support
+    CleverAge\EAVApiPlatformBundle\Serializer\Normalizer\JsonLdApiNormalizer:
+        parent: api_platform.jsonld.normalizer.item
+        public: false
+        calls:
+            - [setNormalizer, ['@Sidus\EAVModelBundle\Serializer\Normalizer\EAVDataNormalizer']]
+        tags:
+            - { name: serializer.normalizer, priority: 9 }
+
+    # FAMILIES
+    eav_api_platform.normalizer.base.family:
+        class: CleverAge\EAVApiPlatformBundle\Serializer\Normalizer\BaseApiNormalizer
+        parent: api_platform.serializer.normalizer.item
+        calls:
+            - [setNormalizer, ['@Sidus\EAVModelBundle\Serializer\Normalizer\FamilyNormalizer']]
+        tags:
+            - { name: serializer.normalizer, priority: 1 }
+
+    # JsonLD Support
+    eav_api_platform.normalizer.json_ld.family:
+        class: CleverAge\EAVApiPlatformBundle\Serializer\Normalizer\JsonLdApiNormalizer
+        parent: api_platform.jsonld.normalizer.item
+        calls:
+            - [setNormalizer, ['@Sidus\EAVModelBundle\Serializer\Normalizer\FamilyNormalizer']]
+        tags:
+            - { name: serializer.normalizer, priority: 9 }
+
+    # USERS have nothing to do with the EAVModel Bundle, move this to dedicated repository
+#    eav_api_platform.normalizer.base.user:
+#        class: CleverAge\EAVApiPlatformBundle\Serializer\Normalizer\BaseApiNormalizer
+#        parent: api_platform.serializer.normalizer.item
+#        calls:
+#            - [setNormalizer, ['@CleverAge\EAVManager\UserBundle\Serializer\Normalizer\UserNormalizer']]
+#        tags:
+#            - { name: serializer.normalizer, priority: 1 }
+#
+#    # JsonLD Support
+#    eav_api_platform.normalizer.json_ld.user:
+#        class: CleverAge\EAVApiPlatformBundle\Serializer\Normalizer\JsonLdApiNormalizer
+#        parent: api_platform.jsonld.normalizer.item
+#        calls:
+#            - [setNormalizer, ['@CleverAge\EAVManager\UserBundle\Serializer\Normalizer\UserNormalizer']]
+#        tags:
+#            - { name: serializer.normalizer, priority: 9 }

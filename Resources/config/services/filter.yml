@@ -1,0 +1,51 @@
+services:
+    CleverAge\EAVApiPlatformBundle\EAV\Filter\AbstractEAVFilter:
+        abstract: true
+        arguments:
+            - '@request_stack'
+            - '@Sidus\EAVModelBundle\Registry\FamilyRegistry'
+            - '@CleverAge\EAVApiPlatformBundle\Resolver\FamilyResolver'
+            - '@Sidus\EAVFilterBundle\Filter\EAVFilterHelper'
+
+    CleverAge\EAVApiPlatformBundle\EAV\Filter\SearchFilter:
+        parent: CleverAge\EAVApiPlatformBundle\EAV\Filter\AbstractEAVFilter
+        abstract: true
+        arguments:
+            - [string]
+
+    CleverAge\EAVApiPlatformBundle\EAV\Filter\BooleanFilter:
+        parent: CleverAge\EAVApiPlatformBundle\EAV\Filter\AbstractEAVFilter
+        abstract: true
+        arguments:
+            - [bool]
+
+    CleverAge\EAVApiPlatformBundle\EAV\Filter\DateFilter:
+        parent: CleverAge\EAVApiPlatformBundle\EAV\Filter\AbstractEAVFilter
+        abstract: true
+        arguments:
+            - [DateTimeInterface]
+
+    CleverAge\EAVApiPlatformBundle\EAV\Filter\NumericFilter:
+        parent: CleverAge\EAVApiPlatformBundle\EAV\Filter\AbstractEAVFilter
+        abstract: true
+        arguments:
+            - [float]
+
+    CleverAge\EAVApiPlatformBundle\EAV\Filter\OrderFilter:
+        parent: CleverAge\EAVApiPlatformBundle\EAV\Filter\AbstractEAVFilter
+        abstract: true
+        arguments:
+            - [int, bool, DateTimeInterface, float, string]
+
+    CleverAge\EAVApiPlatformBundle\EAV\Filter\RangeFilter:
+        parent: CleverAge\EAVApiPlatformBundle\EAV\Filter\AbstractEAVFilter
+        abstract: true
+        arguments:
+            - [int, DateTimeInterface, float]
+
+    # This extension breaks the original query by trying to optimize stuff we don't need
+    # Seriously API Platform ?
+    CleverAge\EAVApiPlatformBundle\Extension\ContextualFilterEagerLoadingExtension:
+        decorates: api_platform.doctrine.orm.query_extension.filter_eager_loading
+        arguments:
+            - '@CleverAge\EAVApiPlatformBundle\Extension\ContextualFilterEagerLoadingExtension.inner'
