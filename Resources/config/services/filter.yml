@@ -1,5 +1,5 @@
 services:
-    CleverAge\EAVApiPlatformBundle\EAV\Filter\AbstractEAVFilter:
+    CleverAge\EAVApiPlatformBundle\Filter\AbstractEAVFilter:
         abstract: true
         arguments:
             - '@request_stack'
@@ -7,38 +7,38 @@ services:
             - '@CleverAge\EAVApiPlatformBundle\Resolver\FamilyResolver'
             - '@Sidus\EAVFilterBundle\Filter\EAVFilterHelper'
 
-    CleverAge\EAVApiPlatformBundle\EAV\Filter\SearchFilter:
-        parent: CleverAge\EAVApiPlatformBundle\EAV\Filter\AbstractEAVFilter
+    CleverAge\EAVApiPlatformBundle\Filter\SearchFilter:
+        parent: CleverAge\EAVApiPlatformBundle\Filter\AbstractEAVFilter
         abstract: true
         arguments:
             - [string]
 
-    CleverAge\EAVApiPlatformBundle\EAV\Filter\BooleanFilter:
-        parent: CleverAge\EAVApiPlatformBundle\EAV\Filter\AbstractEAVFilter
+    CleverAge\EAVApiPlatformBundle\Filter\BooleanFilter:
+        parent: CleverAge\EAVApiPlatformBundle\Filter\AbstractEAVFilter
         abstract: true
         arguments:
             - [bool]
 
-    CleverAge\EAVApiPlatformBundle\EAV\Filter\DateFilter:
-        parent: CleverAge\EAVApiPlatformBundle\EAV\Filter\AbstractEAVFilter
+    CleverAge\EAVApiPlatformBundle\Filter\DateFilter:
+        parent: CleverAge\EAVApiPlatformBundle\Filter\AbstractEAVFilter
         abstract: true
         arguments:
             - [DateTimeInterface]
 
-    CleverAge\EAVApiPlatformBundle\EAV\Filter\NumericFilter:
-        parent: CleverAge\EAVApiPlatformBundle\EAV\Filter\AbstractEAVFilter
+    CleverAge\EAVApiPlatformBundle\Filter\NumericFilter:
+        parent: CleverAge\EAVApiPlatformBundle\Filter\AbstractEAVFilter
         abstract: true
         arguments:
             - [float]
 
-    CleverAge\EAVApiPlatformBundle\EAV\Filter\OrderFilter:
-        parent: CleverAge\EAVApiPlatformBundle\EAV\Filter\AbstractEAVFilter
+    CleverAge\EAVApiPlatformBundle\Filter\OrderFilter:
+        parent: CleverAge\EAVApiPlatformBundle\Filter\AbstractEAVFilter
         abstract: true
         arguments:
             - [int, bool, DateTimeInterface, float, string]
 
-    CleverAge\EAVApiPlatformBundle\EAV\Filter\RangeFilter:
-        parent: CleverAge\EAVApiPlatformBundle\EAV\Filter\AbstractEAVFilter
+    CleverAge\EAVApiPlatformBundle\Filter\RangeFilter:
+        parent: CleverAge\EAVApiPlatformBundle\Filter\AbstractEAVFilter
         abstract: true
         arguments:
             - [int, DateTimeInterface, float]

@@ -8,20 +8,20 @@
  * file that was distributed with this source code.
  */
 
-namespace CleverAge\EAVApiPlatformBundle\EAV\Filter;
+namespace CleverAge\EAVApiPlatformBundle\Filter;
 
 use Sidus\EAVModelBundle\Doctrine\AttributeQueryBuilderInterface;
 use Sidus\EAVModelBundle\Doctrine\DQLHandlerInterface;
 use Sidus\EAVModelBundle\Doctrine\EAVQueryBuilderInterface;
 use Sidus\EAVModelBundle\Model\AttributeInterface;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter as BaseDateFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\RangeFilter as BaseRangeFilter;
 
 /**
  * Filter the collection by given properties.
  *
  * @author Vincent Chalnot <vchalnot@clever-age.com>
  */
-class DateFilter extends AbstractEAVFilter
+class RangeFilter extends AbstractEAVFilter
 {
     /**
      * {@inheritDoc}
@@ -34,34 +34,26 @@ class DateFilter extends AbstractEAVFilter
         string $operationName = null
     ): ?DQLHandlerInterface {
         $dqlHandlers = [];
-        if (BaseDateFilter::EXCLUDE_NULL === $strategy) {
-            $dqlHandlers[] = $attributeQueryBuilder->isNotNull();
+        if (isset($value[BaseRangeFilter::PARAMETER_BETWEEN])) {
+            [$lower, $upper] = explode('..', $value[BaseRangeFilter::PARAMETER_BETWEEN]);
+
+            return $attributeQueryBuilder->between($lower, $upper);
         }
 
-        if (isset($value[BaseDateFilter::PARAMETER_BEFORE])) {
-            $handler = $attributeQueryBuilder->lte($value[BaseDateFilter::PARAMETER_BEFORE]);
-            if (BaseDateFilter::INCLUDE_NULL_BEFORE === $strategy) {
-                $eavQb->getOr(
-                    [
-                        $handler,
-                        $attributeQueryBuilder->isNull(),
-                    ]
-                );
-            }
-            $dqlHandlers[] = $handler;
+        if (isset($value[BaseRangeFilter::PARAMETER_LESS_THAN])) {
+            $dqlHandlers[] = $attributeQueryBuilder->lt($value[BaseRangeFilter::PARAMETER_LESS_THAN]);
         }
 
-        if (isset($values[BaseDateFilter::PARAMETER_AFTER])) {
-            $handler = $attributeQueryBuilder->gte($value[BaseDateFilter::PARAMETER_AFTER]);
-            if (BaseDateFilter::INCLUDE_NULL_AFTER === $strategy) {
-                $eavQb->getOr(
-                    [
-                        $handler,
-                        $attributeQueryBuilder->isNull(),
-                    ]
-                );
-            }
-            $dqlHandlers[] = $handler;
+        if (isset($value[BaseRangeFilter::PARAMETER_LESS_THAN_OR_EQUAL])) {
+            $dqlHandlers[] = $attributeQueryBuilder->lte($value[BaseRangeFilter::PARAMETER_LESS_THAN_OR_EQUAL]);
+        }
+
+        if (isset($value[BaseRangeFilter::PARAMETER_GREATER_THAN])) {
+            $dqlHandlers[] = $attributeQueryBuilder->gt($value[BaseRangeFilter::PARAMETER_GREATER_THAN]);
+        }
+
+        if (isset($value[BaseRangeFilter::PARAMETER_GREATER_THAN_OR_EQUAL])) {
+            $dqlHandlers[] = $attributeQueryBuilder->gte($value[BaseRangeFilter::PARAMETER_GREATER_THAN_OR_EQUAL]);
         }
 
         return $eavQb->getAnd($dqlHandlers);
@@ -81,7 +73,15 @@ class DateFilter extends AbstractEAVFilter
         $typeOfField,
         $strategy = null
     ): void {
-        foreach ([BaseDateFilter::PARAMETER_BEFORE, BaseDateFilter::PARAMETER_AFTER] as $filterParameterName) {
+        $parameters = [
+            BaseRangeFilter::PARAMETER_BETWEEN,
+            BaseRangeFilter::PARAMETER_GREATER_THAN,
+            BaseRangeFilter::PARAMETER_GREATER_THAN_OR_EQUAL,
+            BaseRangeFilter::PARAMETER_LESS_THAN,
+            BaseRangeFilter::PARAMETER_LESS_THAN_OR_EQUAL,
+        ];
+
+        foreach ($parameters as $filterParameterName) {
             $description["{$property}[{$filterParameterName}]"] = [
                 'property' => $property,
                 'type' => $typeOfField,

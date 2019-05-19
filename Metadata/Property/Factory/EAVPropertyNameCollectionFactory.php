@@ -13,8 +13,8 @@ namespace CleverAge\EAVApiPlatformBundle\Metadata\Property\Factory;
 use ApiPlatform\Core\Exception\ResourceClassNotFoundException;
 use ApiPlatform\Core\Metadata\Property\Factory\PropertyNameCollectionFactoryInterface;
 use ApiPlatform\Core\Metadata\Property\PropertyNameCollection;
+use CleverAge\EAVApiPlatformBundle\Resolver\FamilyResolver;
 use Sidus\EAVModelBundle\Entity\DataInterface;
-use Sidus\EAVModelBundle\Registry\FamilyRegistry;
 
 /**
  * Overriding property name collection factory for EAV data to remove "values" and inject EAV attributes.
@@ -26,24 +26,24 @@ class EAVPropertyNameCollectionFactory implements PropertyNameCollectionFactoryI
     /** @var PropertyNameCollectionFactoryInterface */
     protected $propertyNameCollectionFactory;
 
-    /** @var FamilyRegistry */
-    protected $familyRegistry;
+    /** @var FamilyResolver */
+    protected $familyResolver;
 
     /** @var array */
     protected $ignoredAttributes;
 
     /**
      * @param PropertyNameCollectionFactoryInterface $propertyNameCollectionFactory
-     * @param FamilyRegistry                         $familyRegistry
+     * @param FamilyResolver                         $familyResolver
      * @param array                                  $ignoredAttributes
      */
     public function __construct(
         PropertyNameCollectionFactoryInterface $propertyNameCollectionFactory,
-        FamilyRegistry $familyRegistry,
+        FamilyResolver $familyResolver,
         array $ignoredAttributes
     ) {
-        $this->familyRegistry = $familyRegistry;
         $this->propertyNameCollectionFactory = $propertyNameCollectionFactory;
+        $this->familyResolver = $familyResolver;
         $this->ignoredAttributes = $ignoredAttributes;
     }
 
@@ -59,6 +59,11 @@ class EAVPropertyNameCollectionFactory implements PropertyNameCollectionFactoryI
      */
     public function create(string $resourceClass, array $options = []): PropertyNameCollection
     {
+        if (is_a($resourceClass, DataInterface::class, true)) {
+            $family = $this->familyResolver->getFamily($resourceClass);
+            $options['family'] = $family->getCode();
+        }
+
         $propertyNameCollection = $this->propertyNameCollectionFactory->create($resourceClass, $options);
         if (is_a($resourceClass, DataInterface::class, true)) {
             $resolvedProperties = [];

@@ -7,6 +7,8 @@ When declaring any family as a resource for the Api, you need to declare a speci
 
 [SidusEAVModelBundle/Documentation/12-custom_classes.html](https://vincentchalnot.github.io/SidusEAVModelBundle/Documentation/12-custom_classes.html)
 
+And for Hydra documenation to work you need to annotate your final classes with the ```@Family``` annotation.
+
 Everything else is basic ApiPlatform implementation.
 
 ### Installation
@@ -41,9 +43,9 @@ Add the bundles to your kernel:
 This bundle provides 6 different filters for you to use in resource class declaration in place of Doctrine's
 ApiPlatform's ones.
 
- - ```CleverAge\EAVApiPlatformBundle\EAV\Filter\BooleanFilter```
- - ```CleverAge\EAVApiPlatformBundle\EAV\Filter\DateFilter```
- - ```CleverAge\EAVApiPlatformBundle\EAV\Filter\NumericFilter```
- - ```CleverAge\EAVApiPlatformBundle\EAV\Filter\OrderFilter```
- - ```CleverAge\EAVApiPlatformBundle\EAV\Filter\RangeFilter```
- - ```CleverAge\EAVApiPlatformBundle\EAV\Filter\SearchFilter```
+ - ```CleverAge\EAVApiPlatformBundle\Filter\BooleanFilter```
+ - ```CleverAge\EAVApiPlatformBundle\Filter\DateFilter```
+ - ```CleverAge\EAVApiPlatformBundle\Filter\NumericFilter```
+ - ```CleverAge\EAVApiPlatformBundle\Filter\OrderFilter```
+ - ```CleverAge\EAVApiPlatformBundle\Filter\RangeFilter```
+ - ```CleverAge\EAVApiPlatformBundle\Filter\SearchFilter```

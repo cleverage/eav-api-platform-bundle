@@ -3,7 +3,7 @@ services:
         decorates: api_platform.metadata.property.name_collection_factory
         arguments:
             - '@CleverAge\EAVApiPlatformBundle\Metadata\Property\Factory\EAVPropertyNameCollectionFactory.inner'
-            - '@Sidus\EAVModelBundle\Registry\FamilyRegistry'
+            - '@CleverAge\EAVApiPlatformBundle\Resolver\FamilyResolver'
             - '%sidus_eav_model.normalizer.data.ignored_attributes%'
 
     CleverAge\EAVApiPlatformBundle\Metadata\Property\Factory\FamilyPropertyMetadataFactory:

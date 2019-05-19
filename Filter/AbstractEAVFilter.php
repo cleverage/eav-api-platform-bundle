@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace CleverAge\EAVApiPlatformBundle\EAV\Filter;
+namespace CleverAge\EAVApiPlatformBundle\Filter;
 
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\FilterInterface;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;

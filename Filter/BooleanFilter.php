@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace CleverAge\EAVApiPlatformBundle\EAV\Filter;
+namespace CleverAge\EAVApiPlatformBundle\Filter;
 
 use Sidus\EAVModelBundle\Doctrine\AttributeQueryBuilderInterface;
 use Sidus\EAVModelBundle\Doctrine\DQLHandlerInterface;
@@ -19,7 +19,7 @@ use Sidus\EAVModelBundle\Doctrine\EAVQueryBuilderInterface;
  *
  * @author Vincent Chalnot <vchalnot@clever-age.com>
  */
-class NumericFilter extends AbstractEAVFilter
+class BooleanFilter extends AbstractEAVFilter
 {
     /**
      * {@inheritDoc}
@@ -31,6 +31,14 @@ class NumericFilter extends AbstractEAVFilter
         $strategy = null,
         string $operationName = null
     ): ?DQLHandlerInterface {
+        if (\in_array($value, ['true', '1'], true)) {
+            $value = true;
+        } elseif (\in_array($value, ['false', '0'], true)) {
+            $value = false;
+        } else {
+            $value = (bool) $value; // #covfefe
+        }
+
         return $attributeQueryBuilder->equals($value);
     }
 }

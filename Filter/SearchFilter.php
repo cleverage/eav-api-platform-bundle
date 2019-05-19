@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace CleverAge\EAVApiPlatformBundle\EAV\Filter;
+namespace CleverAge\EAVApiPlatformBundle\Filter;
 
 use ApiPlatform\Core\Exception\InvalidArgumentException;
 use Sidus\EAVModelBundle\Doctrine\AttributeQueryBuilderInterface;
@@ -26,7 +26,7 @@ class SearchFilter extends AbstractEAVFilter
     /**
      * {@inheritDoc}
      *
-     * @throws \ApiPlatform\Core\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     protected function filterAttribute(
         EAVQueryBuilderInterface $eavQb,
