@@ -24,6 +24,7 @@ use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactoryInterface;
 use Symfony\Component\Serializer\NameConverter\NameConverterInterface;
 use ApiPlatform\Core\Exception\InvalidArgumentException;
+use function is_array;
 
 /**
  * JsonLdNormalizer is final in API Platform so we are forced to copy a lot of code.
@@ -105,14 +106,18 @@ class JsonLdApiNormalizer extends BaseApiNormalizer
         $data = $this->addJsonLdContext($this->contextBuilder, $resourceClass, $context);
 
         $rawData = parent::normalize($object, $format, $context);
-        if (!\is_array($rawData)) {
+        if (!is_array($rawData)) {
             return $rawData;
         }
 
-        $data['@id'] = $this->iriConverter->getIriFromItem($object);
+        try {
+            $data['@id'] = $this->iriConverter->getIriFromItem($object);
+        } catch (InvalidArgumentException $e) {
+        }
         $data['@type'] = $resourceMetadata->getIri() ?: $resourceMetadata->getShortName();
 
         /** @noinspection AdditionOperationOnArraysInspection */
+
         return $data + $rawData;
     }
 

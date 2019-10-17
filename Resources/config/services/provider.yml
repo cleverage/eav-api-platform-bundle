@@ -1,13 +1,13 @@
 services:
+    CleverAge\EAVApiPlatformBundle\DataProvider\EAVDataProvider:
+        public: false
+        autowire: true
+        tags:
+            - { name: api_platform.item_data_provider, priority: 2 }
+
     CleverAge\EAVApiPlatformBundle\DataProvider\FamilyDataProvider:
         public: false
         autowire: true
         tags:
             -  { name: api_platform.collection_data_provider, priority: 2 }
-            -  { name: api_platform.item_data_provider, priority: 2 }
-
-    CleverAge\EAVApiPlatformBundle\DataProvider\UserProfileDataProvider:
-        public: false
-        autowire: true
-        tags:
             -  { name: api_platform.item_data_provider, priority: 2 }

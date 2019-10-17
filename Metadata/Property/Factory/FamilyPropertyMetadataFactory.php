@@ -23,14 +23,14 @@ use Sidus\EAVModelBundle\Model\FamilyInterface;
 class FamilyPropertyMetadataFactory implements PropertyMetadataFactoryInterface
 {
     /** @var PropertyMetadataFactoryInterface */
-    protected $propertyMetadata;
+    protected $propertyMetadataFactory;
 
     /**
      * @param PropertyMetadataFactoryInterface $propertyMetadata
      */
     public function __construct(PropertyMetadataFactoryInterface $propertyMetadata)
     {
-        $this->propertyMetadata = $propertyMetadata;
+        $this->propertyMetadataFactory = $propertyMetadata;
     }
 
     /**
@@ -46,7 +46,7 @@ class FamilyPropertyMetadataFactory implements PropertyMetadataFactoryInterface
      */
     public function create(string $resourceClass, string $property, array $options = []): PropertyMetadata
     {
-        $propertyMetadata = $this->propertyMetadata->create($resourceClass, $property, $options);
+        $propertyMetadata = $this->propertyMetadataFactory->create($resourceClass, $property, $options);
 
         if ('code' === $property && is_a($resourceClass, FamilyInterface::class, true)) {
             return $propertyMetadata->withIdentifier(true);

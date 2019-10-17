@@ -10,3 +10,11 @@ services:
         decorates: api_platform.metadata.property.metadata_factory
         arguments:
             - '@CleverAge\EAVApiPlatformBundle\Metadata\Property\Factory\FamilyPropertyMetadataFactory.inner'
+
+    CleverAge\EAVApiPlatformBundle\Metadata\Property\Factory\EAVAttributeMetadataFactory:
+        decorates: api_platform.metadata.property.metadata_factory
+        arguments:
+            - '@CleverAge\EAVApiPlatformBundle\Metadata\Property\Factory\EAVAttributeMetadataFactory.inner'
+            - '@property_info'
+            - '@Sidus\EAVModelBundle\Registry\FamilyRegistry'
+            - '@api_platform.resource_class_resolver'
