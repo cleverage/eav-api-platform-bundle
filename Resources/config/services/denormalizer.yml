@@ -1,3 +1,24 @@
+parameters:
+    sidus_eav_model.denormalizer.data.ignored_attributes:
+        - createdBy
+        - updatedBy
+        - createdAt
+        - updatedAt
+        - label
+        - id
+        - identifier # Forbids the usage of the setIdentifier, forces to use the actual attribute instead
+        - family
+        - familyCode
+        - refererValues
+        - refererDatas
+        - stringIdentifier
+        - integerIdentifier
+        - values
+        - valuesCollection
+        - '@@context'
+        - '@@id'
+        - '@@type'
+
 services:
     Sidus\EAVModelBundle\Serializer\Denormalizer\EAVDataDenormalizer:
         parent: serializer.normalizer.object
